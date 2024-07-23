@@ -11,6 +11,13 @@ type scanner struct {
 	palette []color.NRGBA
 }
 
+func maxInt(a, b int) int {
+	if a > b {
+		return a
+	}
+	return b
+}
+
 func newScanner(img image.Image) *scanner {
 	s := &scanner{
 		image: img,
@@ -18,7 +25,7 @@ func newScanner(img image.Image) *scanner {
 		h:     img.Bounds().Dy(),
 	}
 	if img, ok := img.(*image.Paletted); ok {
-		s.palette = make([]color.NRGBA, len(img.Palette))
+		s.palette = make([]color.NRGBA, maxInt(256, len(img.Palette)))
 		for i := 0; i < len(img.Palette); i++ {
 			s.palette[i] = color.NRGBAModel.Convert(img.Palette[i]).(color.NRGBA)
 		}
